@@ -270,9 +270,21 @@ impl pallet_sudo::Config for Runtime {
 	type RuntimeCall = RuntimeCall;
 }
 
+parameter_types! {
+	pub const BlogPostMinBytes: u32 = 64;
+	pub const BlogPostMaxBytes: u32 = 4096;
+	pub const BlogPostCommentMinBytes: u32 = 64;
+	pub const BlogPostCommentMaxBytes: u32 = 1024;
+}
+
 /// Configure the pallet-InvoPallet in pallets/InvoPallet.
 impl pallet_InvoPallet::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type BlogPostMintBytes = BlogPostMinBytes;
+	type BlogPostMaxBytes = BlogPostMaxBytes;
+	type BlogPostCommentMinBytes = BlogPostCommentMinBytes;
+	type BlogPostCommentMaxBytes = BlogPostCommentMaxBytes;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -292,7 +304,7 @@ construct_runtime!(
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-InvoPallet in the runtime.
-		TemplateModule: pallet_InvoPallet,
+		InvoModule: pallet_InvoPallet,
 	}
 );
 
